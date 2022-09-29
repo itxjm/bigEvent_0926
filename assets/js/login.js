@@ -60,11 +60,11 @@ $(function () {
     $.ajax({
       method: 'POST',
       url: '/api/login',
-      data:JSON.stringify({
-        username:$('#formLogin [name=username]').val(),
-        password:$('#formLogin [name=password]').val(),
-      }),
-      // data: format2Json($(this).serialize()),
+      // data:JSON.stringify({
+      //   username:$('#formLogin [name=username]').val(),
+      //   password:$('#formLogin [name=password]').val(),
+      // }),
+      data: format2Json($(this).serialize()),
       success(res) {
         if (res.code !== 0) return layer.msg(res.message)
         // layer.msg('登录成功')
