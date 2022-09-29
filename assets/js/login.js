@@ -1,4 +1,7 @@
 $(function () {
+  let form = layui.form
+  let layer = layui.layer
+
   $('#goReg').on('click', function () {
     $('.login-wrap').hide()
     $('.reg-wrap').show()
@@ -8,8 +11,7 @@ $(function () {
     $('.login-wrap').show()
   })
 
-  let form = layui.form
-  let layer = layui.layer
+ 
   form.verify({
     // 添加自定义规则
     pwd: [/^[\S]{6,12}$/, '密码必须6到12位，且不能出现空格'],
@@ -31,12 +33,12 @@ $(function () {
     return JSON.stringify(target)
   }
 
+  // 注册
   $('#formReg').on('submit', function (e) {
     e.preventDefault()
     $.ajax({
       method: 'POST',
-      url: 'http://big-event-vue-api-t.itheima.net/api/reg',
-      contentType: 'application/json',
+      url: '/api/reg',
       // data:JSON.stringify({
       //   username:$('#formReg [name=username]').val(),
       //   password:$('#formReg [name=password]').val(),
@@ -51,4 +53,25 @@ $(function () {
       }
     })
   })
+
+  // 登录
+  $('#formLogin').on('submit', function (e) {
+    e.preventDefault()
+    $.ajax({
+      method: 'POST',
+      url: '/api/login',
+      data:JSON.stringify({
+        username:$('#formLogin [name=username]').val(),
+        password:$('#formLogin [name=password]').val(),
+      }),
+      // data: format2Json($(this).serialize()),
+      success(res) {
+        if (res.code !== 0) return layer.msg(res.message)
+        // layer.msg('登录成功')
+        localStorage.setItem('token',res.token)
+        location.href = '/index.html'
+      }
+    })
+  })
+
 })
