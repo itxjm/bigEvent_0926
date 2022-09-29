@@ -42,3 +42,10 @@ html,body{
 .layui-input{
   padding-left: 30px;
 }
+ .layui-form .links{
+ display: flex;
+ justify-content: flex-end;
+}
+.layui-form .links a {
+  font-size: 12px;
+}
