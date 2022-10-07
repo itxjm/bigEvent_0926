@@ -2,22 +2,18 @@ $(function(){
   let layer = layui.layer
 
 
-  function getUserInfo(){
-    $.ajax({
-      method:'GET',
-      url:'/my/userinfo',
-      // headers:{
-      //   Authorization:localStorage.getItem('token') || ''
-      // },
-      success(res){
-        if(res.code !== 0) return layer.msg(res.message)
-        // 按需渲染头像
-        renderAvatar(res)
-      }
-     
-    })
-  }
   getUserInfo()
+  // 退出页面
+  $('#btnLogout').on('click',function(){
+    layer.confirm('确认退出?', {icon: 3, title:'提示'}, function(index){
+      //1.token需要移除
+      localStorage.removeItem('token')
+      // 2.页面需要跳转到登录页
+      location.href = '/login.html'   
+      layer.close(index)
+    })
+  })
+})
 
   const renderAvatar = (res) => {
     if(res.data.user_pic) {
@@ -34,14 +30,18 @@ $(function(){
     $('.text').html(`欢迎&nbsp;&nbsp;${res.data.username}`)
   }
 
-  // 退出页面
-  $('#btnLogout').on('click',function(){
-    layer.confirm('确认退出?', {icon: 3, title:'提示'}, function(index){
-      //1.token需要移除
-      localStorage.removeItem('token')
-      // 2.页面需要跳转到登录页
-      location.href = '/login.html'   
-      layer.close(index)
+  function getUserInfo(){
+    $.ajax({
+      method:'GET',
+      url:'/my/userinfo',
+      // headers:{
+      //   Authorization:localStorage.getItem('token') || ''
+      // },
+      success(res){
+        if(res.code !== 0) return layer.msg(res.message)
+        // 按需渲染头像
+        renderAvatar(res)
+      }
+     
     })
-  })
-})
+  }
