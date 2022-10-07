@@ -24,12 +24,34 @@ $(function () {
     if (fileList.length === 0) return layer.msg('请选择图片')
     // 2. 将文件，转化为路径
     const blobUrl = URL.createObjectURL(fileList[0])
-
+    // console.log(blobUrl) //blob:http://127.0.0.1:5500/6afc1524-91b8-4180-be4b-d7a4c03f1ca5
+    
     // 3. 重新初始化裁剪区域
     $image
       .cropper('destroy') // 销毁旧的裁剪区域
       .attr('src', blobUrl) // 重新设置图片路径
       .cropper(options) // 重新初始化裁剪区域
   })
-  
+  $('#btnConfirm').on('click', function () {
+    let dataURL = $image
+      .cropper('getCroppedCanvas', {
+        // 创建一个 Canvas 画布
+        width: 100,
+        height: 100
+      })
+      .toDataURL('image/png')
+    $.ajax({
+      method: 'PATCH',
+      url: '/my/update/avatar',
+      // contentType: 'application/json',
+      data: JSON.stringify({
+        avatar: dataURL
+      }),
+      success(res) {
+        if (res.code !== 0) return layer.msg('更新头像失败！')
+        layer.msg('更新头像成功！')
+        window.parent.getUserInfo()
+      }
+    })
+  })
 })

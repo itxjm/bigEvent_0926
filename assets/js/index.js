@@ -1,5 +1,7 @@
 $(function(){
   let layer = layui.layer
+
+
   function getUserInfo(){
     $.ajax({
       method:'GET',
@@ -18,16 +20,16 @@ $(function(){
   getUserInfo()
 
   const renderAvatar = (res) => {
-    if(res.user_pic) {
+    if(res.data.user_pic) {
       $('.text-avatar').hide()
-      $('.user-box img').css('src',res.user_pic).show()
+      $('.user-box img').attr('src',res.data.user_pic).show()
     }else{
       $('.layui-nav-img').hide()
       // 显示文字头像 取username属性 的第一个字母
       const name = res.data.nickname || res.data.username
       // const char = res.data.username.charAt(0).toUpperCase()
       const char = name[0].toUpperCase()
-      $('.text-avatar').html(char)
+      $('.text-avatar').css('display','flex').html(char).show()
     }
     $('.text').html(`欢迎&nbsp;&nbsp;${res.data.username}`)
   }
